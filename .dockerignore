@@ -1,0 +1,10 @@
+node_modules
+video/node_modules
+dist
+.astro
+.git
+.vscode
+prompt
+prompts
+.agents
+*.log
