@@ -1,0 +1,237 @@
+---
+// Bento Grid of the 7 Clinical Departments at VANGA Medical
+---
+
+<section class="py-24 px-4 md:px-8 max-w-7xl mx-auto" id="specialites">
+  <div class="text-center max-w-3xl mx-auto mb-16">
+    <div class="reveal inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-3 hover:scale-105 transition-transform">
+      <span class="material-symbols-outlined text-[14px]" data-icon="stethoscope">stethoscope</span>
+      PÔLES D'EXPERTISE
+    </div>
+    <h2 class="reveal stagger-1 font-headline text-3xl md:text-5xl text-[#0A2540] dark:text-white font-extrabold tracking-tight mb-4">
+      Nos 7 Spécialités Médicales à Niangon
+    </h2>
+    <p class="reveal stagger-2 font-body text-base md:text-lg text-slate-600 dark:text-slate-300">
+      Une équipe permanente de médecins spécialistes et un personnel soignant dévoué pour répondre à chaque étape de votre vie de santé.
+    </p>
+  </div>
+
+  <!-- Bento Grid with soft #c6f7ff borders, hover elevation & "Prendre RDV →" action -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6" id="services">
+    <!-- 1. Médecine Générale (Span 4) -->
+    <div class="reveal-scale stagger-1 lg:col-span-4 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="clinical_notes">clinical_notes</span>
+          </div>
+          <span class="text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full">
+            Sans RDV & Programmé
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">1. Médecine Générale</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Consultations de premier recours, bilans préventifs systématiques, diagnostic précoce et suivi personnalisé des pathologies chroniques.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Médecine Générale"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+
+    <!-- 2. Cardiologie (Span 8 Highlight) -->
+    <div class="reveal-scale stagger-2 lg:col-span-8 glass-card-elevated card-hover-effect shimmer-card p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between border-2 border-cyan-200 dark:border-cyan-800/60 shadow-md hover:shadow-2xl group">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-[#c6f7ff]/50 dark:bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6 relative z-10">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/60 flex items-center justify-center text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform duration-300">
+              <span class="material-symbols-outlined text-[28px] animate-pulse" data-icon="cardiology" data-weight="fill">cardiology</span>
+            </div>
+            <span class="text-xs font-bold bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 px-3 py-1 rounded-full uppercase tracking-wider">
+              Unité Coronarienne 24h/24
+            </span>
+          </div>
+
+          <!-- Animated ECG Heartbeat Waveform -->
+          <div class="flex items-center gap-3">
+            <svg class="w-24 h-6 text-rose-500" viewBox="0 0 100 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path class="animate-ecg-draw" stroke-dasharray="200" d="M0 12h20l4-8 4 16 6-18 5 22 4-12h57"/>
+            </svg>
+            <div class="text-xs font-mono font-semibold text-cyan-800 dark:text-cyan-300 flex items-center gap-2 bg-[#e8fbff] dark:bg-slate-800 px-3 py-1 rounded-full border border-[#c6f7ff] dark:border-cyan-900/50">
+              <span class="material-symbols-outlined text-[15px] animate-pulse" data-icon="monitor_heart">monitor_heart</span>
+              ECG Holter Prêt
+            </div>
+          </div>
+        </div>
+        <div class="relative z-10">
+          <h3 class="font-headline text-2xl md:text-3xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
+            2. Cardiologie & Soins Vasculaires
+          </h3>
+          <p class="font-body text-base text-slate-600 dark:text-slate-300 max-w-2xl mb-6 leading-relaxed">
+            Prise en charge intégrale de l'hypertension artérielle, échocardiographie Doppler haute résolution, suivi des insuffisances cardiaques et traitement d'urgence des syndromes coronariens aigus.
+          </p>
+        </div>
+      </div>
+      <div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-300">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-[16px]" data-icon="check_circle">check_circle</span>
+            Échodoppler
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-[16px]" data-icon="check_circle">check_circle</span>
+            MAPA 24h
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-[16px]" data-icon="check_circle">check_circle</span>
+            Épreuve d'effort
+          </span>
+        </div>
+        <a
+          class="px-5 py-2.5 rounded-full bg-[#c6f7ff] dark:bg-cyan-400 text-[#0A2540] dark:text-slate-950 font-bold text-xs hover:bg-[#b0f2fd] dark:hover:bg-cyan-300 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 border border-cyan-200 dark:border-cyan-300 shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+          href="#portail"
+          data-open-booking-modal
+          data-specialty="Cardiologie"
+        >
+          <span>Prendre RDV →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3. Pédiatrie (Span 6) -->
+    <div class="reveal-scale stagger-3 lg:col-span-6 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="child_care">child_care</span>
+          </div>
+          <span class="text-xs font-semibold text-blue-800 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-3 py-1 rounded-full">
+            Néonatologie & Suivi
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">3. Pédiatrie</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Santé globale du nourrisson et de l'enfant : calendrier vaccinal rigoureux, gestion des urgences fébriles, croissance psychomotrice et nutrition adaptée.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Pédiatrie"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+
+    <!-- 4. Maternité (Span 6) -->
+    <div class="reveal-scale stagger-4 lg:col-span-6 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="pregnant_woman">pregnant_woman</span>
+          </div>
+          <span class="text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3 py-1 rounded-full">
+            Accouchement 24/7
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">4. Maternité & Gynécologie</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Suivi mensuel de grossesse, échographie morphologique 4D haute résolution, préparation à la naissance et salles de travail climatisées ultra-sécurisées.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Maternité"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+
+    <!-- 5. Chirurgie Dentaire (Span 4) -->
+    <div class="reveal-scale stagger-5 lg:col-span-4 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="dentistry">dentistry</span>
+          </div>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">
+            Fauteuil Numérique
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">5. Chirurgie Dentaire</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Soins conservateurs, radiographie panoramique dentaire, pose d'implants, blanchiment esthétique et gestion immédiate des urgences douloureuses.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Dentaire"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+
+    <!-- 6. Ophtalmologie (Span 4) -->
+    <div class="reveal-scale stagger-6 lg:col-span-4 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="visibility">visibility</span>
+          </div>
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">
+            Bilan Oculaire
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">6. Ophtalmologie</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Mesure de l'acuité visuelle par autoréfractomètre, fond d'œil numérisé, dépistage du glaucome, rétinopathie diabétique et verres correcteurs.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Ophtalmologie"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+
+    <!-- 7. Psychiatrie & Santé Mentale (Span 4) -->
+    <div class="reveal-scale stagger-7 lg:col-span-4 glass-card-light card-hover-effect shimmer-card p-8 rounded-3xl flex flex-col justify-between hover:shadow-xl hover:border-cyan-300 dark:hover:border-cyan-500 group">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            <span class="material-symbols-outlined text-[28px]" data-icon="psychology">psychology</span>
+          </div>
+          <span class="text-xs font-semibold text-cyan-900 dark:text-cyan-300 bg-[#e8fbff] dark:bg-cyan-950/60 border border-[#c6f7ff] dark:border-cyan-900 px-2.5 py-1 rounded-full">
+            Confidentialité 100%
+          </span>
+        </div>
+        <h3 class="font-headline text-xl text-[#0A2540] dark:text-white font-bold mb-3 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">7. Psychiatrie & Santé Mentale</h3>
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+          Écoute bienveillante et sans jugement, thérapies individuelles, gestion du burn-out, prise en charge des troubles anxieux et du sommeil.
+        </p>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-[#0A2540] dark:text-cyan-300 font-bold hover:text-cyan-600 dark:hover:text-cyan-200 text-sm group-hover:translate-x-1.5 transition-transform duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+        data-specialty="Médecine Générale"
+      >
+        <span>Prendre RDV →</span>
+      </a>
+    </div>
+  </div>
+</section>

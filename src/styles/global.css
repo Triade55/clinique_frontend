@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .material-symbols-outlined[data-weight="fill"] {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* Glassmorphic Cards (Light & Dark) */
+  .glass-card-light {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(198, 247, 255, 0.7);
+    box-shadow: 0 10px 30px -10px rgba(10, 37, 64, 0.05), 0 0 1px 1px rgba(198, 247, 255, 0.4);
+  }
+  .glass-card-elevated {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(198, 247, 255, 0.9);
+    box-shadow: 0 16px 40px -12px rgba(10, 37, 64, 0.08), 0 0 0 1px rgba(198, 247, 255, 0.6);
+  }
+  .dark .glass-card-light {
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(198, 247, 255, 0.2);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(198, 247, 255, 0.08);
+  }
+  .dark .glass-card-elevated {
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(198, 247, 255, 0.3);
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(198, 247, 255, 0.15);
+  }
+
+  .glow-cyan-blob {
+    background: radial-gradient(circle, rgba(198, 247, 255, 0.75) 0%, rgba(198, 247, 255, 0) 70%);
+  }
+  .badge-cyan {
+    background-color: #e8fbff;
+    border: 1px solid #c6f7ff;
+    color: #0A2540;
+  }
+  .dark .badge-cyan {
+    background-color: rgba(14, 165, 233, 0.15);
+    border: 1px solid rgba(198, 247, 255, 0.3);
+    color: #c6f7ff;
+  }
+
+  /* Reveal Animations on Scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.95) translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal-scale.active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  /* Stagger Delays */
+  .stagger-1 { transition-delay: 60ms; }
+  .stagger-2 { transition-delay: 130ms; }
+  .stagger-3 { transition-delay: 200ms; }
+  .stagger-4 { transition-delay: 270ms; }
+  .stagger-5 { transition-delay: 340ms; }
+  .stagger-6 { transition-delay: 410ms; }
+  .stagger-7 { transition-delay: 480ms; }
+
+  /* Interactive Hover Lift & Glow */
+  .card-hover-effect {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  }
+  .card-hover-effect:hover {
+    transform: translateY(-6px);
+  }
+
+  /* Shimmer Sheen */
+  .shimmer-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(198, 247, 255, 0.22) 50%,
+      transparent 100%
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+  }
+  .shimmer-card:hover::after {
+    animation: cardShimmer 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes cardShimmer {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+/* Accessibility: Keyboard Visible Focus Rings */
+:focus-visible {
+  outline: 2px solid #22D3EE !important;
+  outline-offset: 3px !important;
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-pulse,
+  .animate-pulse-glow,
+  .animate-float-slow,
+  .animate-spin-slow,
+  .animate-ecg-draw {
+    animation: none !important;
+  }
+}

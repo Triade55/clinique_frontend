@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>CV_ADICO_JOSIANE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #cbd5e1;
+            color: #1e293b;
+            line-height: 1.45;
+            font-size: 12.2px;
+        }
+
+        /* Barre d'outils visible uniquement à l'écran */
+        .toolbar {
+            width: 210mm;
+            margin: 15px auto;
+            background: #0f172a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .toolbar-steps {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #0369a1;
+        }
+
+        .btn-print {
+            background: #10b981;
+        }
+
+        .btn-print:hover {
+            background: #059669;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Page A4 */
+        .cv-page {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto 20px auto;
+            background: #ffffff;
+            display: flex;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        /* Colonne de gauche */
+        .sidebar {
+            width: 33%;
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 28px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .photo-container {
+            text-align: center;
+        }
+
+        .photo-container img {
+            width: 135px;
+            height: 135px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 3px solid #38bdf8;
+            background-color: #ffffff;
+        }
+
+        .sidebar-section h2 {
+            font-size: 12.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #38bdf8;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            font-size: 11.8px;
+        }
+
+        .contact-list li {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 1px;
+        }
+
+        .skills-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            font-size: 11.5px;
+        }
+
+        .skills-list li {
+            position: relative;
+            padding-left: 12px;
+            color: #f1f5f9;
+        }
+
+        .skills-list li::before {
+            content: "•";
+            color: #38bdf8;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .qualities-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background-color: #334155;
+            color: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        /* Colonne de droite */
+        .main-content {
+            width: 67%;
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: 0.3px;
+            line-height: 1.25;
+            margin-bottom: 5px;
+        }
+
+        .header .job-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #0284c7;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #0f172a;
+            letter-spacing: 0.7px;
+            border-left: 3.5px solid #0284c7;
+            padding-left: 8px;
+            margin-bottom: 9px;
+        }
+
+        .profile-text {
+            color: #334155;
+            text-align: justify;
+            font-size: 12px;
+        }
+
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .exp-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .exp-role {
+            font-weight: 700;
+            font-size: 12.5px;
+            color: #0f172a;
+        }
+
+        .exp-company {
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .exp-date {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .exp-tasks {
+            list-style: none;
+            padding-left: 12px;
+            color: #334155;
+            font-size: 11.7px;
+        }
+
+        .exp-tasks li {
+            position: relative;
+            margin-bottom: 1.5px;
+        }
+
+        .exp-tasks li::before {
+            content: "–";
+            position: absolute;
+            left: -12px;
+            color: #64748b;
+        }
+
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 11.7px;
+        }
+
+        .edu-degree {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .edu-school {
+            color: #475569;
+        }
+
+        .edu-year {
+            font-weight: 600;
+            color: #0284c7;
+            font-size: 11.5px;
+            white-space: nowrap;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+            .toolbar {
+                display: none !important;
+            }
+            .cv-page {
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <span><strong>Générateur PDF (Format A4)</strong></span>
+    <div class="toolbar-steps">
+        <label class="btn" for="photoInput">1. Choisir la photo</label>
+        <input type="file" id="photoInput" accept="image/*">
+        <button class="btn btn-print" onclick="window.print()">2. Télécharger en PDF</button>
+    </div>
+</div>
+
+<div class="cv-page">
+    <aside class="sidebar">
+        <div class="photo-container">
+            <img id="cvPhoto" src="photo.jpg" alt="Photo de profil">
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Coordonnées</h2>
+            <ul class="contact-list">
+                <li>
+                    <span class="contact-label">Localisation</span>
+                    <span>Abidjan, Côte d’Ivoire</span>
+                </li>
+                <li>
+                    <span class="contact-label">Téléphone</span>
+                    <span>+225 07 08 78 44 79</span>
+                </li>
+                <li>
+                    <span class="contact-label">E-mail</span>
+                    <span>Adico.josiane@yahoo.fr</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Compétences</h2>
+            <ul class="skills-list">
+                <li>Organisation et suivi des activités</li>
+                <li>Gestion administrative et classement des dossiers</li>
+                <li>Préparation des devis et bons de commande</li>
+                <li>Suivi des factures et des paiements</li>
+                <li>Suivi des budgets et des dépenses</li>
+                <li>Coordination des équipes</li>
+                <li>Accueil et suivi des clients</li>
+                <li>Organisation des travaux et suivi de la qualité</li>
+                <li>Suivi des véhicules et des opérations de transport</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Qualités professionnelles</h2>
+            <div class="qualities-tags">
+                <span class="tag">Rigueur</span>
+                <span class="tag">Organisation</span>
+                <span class="tag">Discrétion</span>
+                <span class="tag">Esprit d’équipe</span>
+                <span class="tag">Réactivité</span>
+                <span class="tag">Sens des responsabilités</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>ADICO ÉPSE KODJALIN CHO<br>ARNOUILLE JOSIANE</h1>
+            <div class="job-title">Assistante d’exploitation et administrative</div>
+        </header>
+
+        <section>
+            <h2 class="section-title">Profil Professionnel</h2>
+            <p class="profile-text">
+                Professionnelle avec plus de 13 ans d’expérience dans l’organisation du travail, le suivi des activités et l’assistance administrative. Habituée à travailler avec différentes équipes, à préparer des documents, à suivre les factures et les paiements et à organiser les activités quotidiennes. Sérieuse, organisée et polyvalente.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="section-title">Expériences Professionnelles</h2>
+            <div class="experience-list">
+                
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div><span class="exp-role">Assistante d’exploitation</span> — <span class="exp-company">La Ferme de Bonoua</span></div>
+                        <span class="exp-date">Janvier 2024 – Août 2025</span>
+                    </div>
+                    <ul class="exp-tasks">
+                        <li>Organiser et suivre les activités de production.</li>
+                        <li>Suivre les dépenses et les résultats.</li>
+                        <li>Coordonner le travail des équipes.</li>
+                        <li>Participer à l’amélioration de l’organisation du travail.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div><span class="exp-role">Assistante d’exploitation</span> — <span class="exp-company">CIIMAA Maroc</span></div>
+                        <span class="exp-date">2021 – 2023</span>
+                    </div>
+                    <ul class="exp-tasks">
+                        <li>Organiser les opérations de transport entre les villes.</li>
+                        <li>Assurer le suivi des véhicules.</li>
+                        <li>Préparer et suivre les dépenses d’exploitation.</li>
+                        <li>Coordonner les équipes administratives et de terrain.</li>
+                        <li>Participer à l’amélioration des méthodes de travail.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div><span class="exp-role">Assistante de direction et d’exploitation</span> — <span class="exp-company">SOS Auto</span></div>
+                        <span class="exp-date">2018 – 2021</span>
+                    </div>
+                    <ul class="exp-tasks">
+                        <li>Organiser et suivre les activités quotidiennes.</li>
+                        <li>Coordonner les opérations techniques.</li>
+                        <li>Suivre les résultats et la qualité du service.</li>
+                        <li>Assurer le suivi des clients et contribuer à leur fidélisation.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div><span class="exp-role">Secrétaire – Assistante comptable</span> — <span class="exp-company">Equip Ivoire</span></div>
+                        <span class="exp-date">2017 – 2018</span>
+                    </div>
+                    <ul class="exp-tasks">
+                        <li>Gérer le secrétariat et classer les documents.</li>
+                        <li>Préparer les devis et les bons de commande.</li>
+                        <li>Suivre les paiements des clients et des fournisseurs.</li>
+                        <li>Effectuer la saisie comptable et les rapprochements.</li>
+                        <li>Transmettre les informations entre les équipes, la direction et l’expert-comptable.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <div><span class="exp-role">Assistante chef d’atelier</span> — <span class="exp-company">Custom Car Paint</span></div>
+                        <span class="exp-date">2013 – 2017</span>
+                    </div>
+                    <ul class="exp-tasks">
+                        <li>Organiser les activités de l’atelier.</li>
+                        <li>Planifier les travaux.</li>
+                        <li>Suivre la qualité du travail réalisé.</li>
+                        <li>Participer à la gestion administrative de l’atelier.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Formation</h2>
+            <div class="education-list">
+                <div class="edu-item">
+                    <div><span class="edu-degree">Ingénieur de conception en Ressources humaines</span> — <span class="edu-school">ALT-ISTEA Académie, Abidjan</span></div>
+                    <span class="edu-year">2013</span>
+                </div>
+                <div class="edu-item">
+                    <div><span class="edu-degree">Ingénieur technologie en Ressources humaines</span> — <span class="edu-school">ALT-ISTEA Académie, Abidjan</span></div>
+                    <span class="edu-year">2011</span>
+                </div>
+                <div class="edu-item">
+                    <div><span class="edu-degree">DESS en Ressources humaines</span> — <span class="edu-school">ALT-ISTEA Académie, Abidjan</span></div>
+                    <span class="edu-year">2011</span>
+                </div>
+                <div class="edu-item">
+                    <div><span class="edu-degree">BTS Gestion des collectivités territoriales</span> — <span class="edu-school">Groupe Loko, Abidjan</span></div>
+                    <span class="edu-year">2010</span>
+                </div>
+                <div class="edu-item">
+                    <div><span class="edu-degree">Baccalauréat G2 Comptabilité</span> — <span class="edu-school">Groupe Loko, Abidjan</span></div>
+                    <span class="edu-year">2008</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    document.getElementById('photoInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cvPhoto').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>

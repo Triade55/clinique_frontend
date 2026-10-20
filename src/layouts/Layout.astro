@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "VANGA Medical Center | Clinique d'Excellence à Yopougon Niangon Sud",
+  description = "Clinique médico-chirurgicale privée à Yopougon Niangon Sud. 7 pôles d'excellence : Médecine générale, Cardiologie, Pédiatrie, Maternité, Dentaire, Ophtalmologie, Psychiatrie. Urgences 24/7."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- Theme Initialization Script (prevent FOUC) -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#F8FAFC] dark:bg-slate-900 text-[#475569] dark:text-slate-200 font-body antialiased selection:bg-[#c6f7ff] selection:text-[#0A2540] transition-colors duration-200">
+    <slot />
+
+    <!-- Scroll Reveal & Micro-Interactions Client Script -->
+    <script>
+      function initScrollAnimations() {
+        // IntersectionObserver for reveal elements
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+              }
+            });
+          },
+          {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px',
+          }
+        );
+
+        document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => {
+          observer.observe(el);
+        });
+
+        // Navbar elevation on scroll
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 30) {
+            header?.classList.add('shadow-lg', 'scale-[0.99]');
+          } else {
+            header?.classList.remove('shadow-lg', 'scale-[0.99]');
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollAnimations);
+      } else {
+        initScrollAnimations();
+      }
+    </script>
+  </body>
+</html>

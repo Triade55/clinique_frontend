@@ -1,0 +1,112 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+const navLinks: NavLink[] = [
+  { label: 'Accueil', href: '#hero' },
+  { label: 'Services', href: '#services' },
+  { label: 'Spécialités', href: '#specialites' },
+  { label: 'Plateau 3D', href: '#plateau-3d' },
+  { label: 'Contact', href: '#localisation' },
+];
+
+const phoneTel = "+2250768280690";
+---
+
+<header class="fixed top-4 inset-x-4 md:inset-x-8 max-w-7xl mx-auto rounded-pill z-50 bg-white/85 dark:bg-slate-900/85 backdrop-blur-xl border border-[#c6f7ff] dark:border-cyan-900/40 shadow-[0_8px_30px_rgb(10,37,64,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] transition-colors duration-200">
+  <div class="flex justify-between items-center px-6 py-3 w-full">
+    <!-- Logo with medical cross & subtitle -->
+    <a class="flex items-center gap-3 group" href="#hero">
+      <div class="w-9 h-9 rounded-full bg-[#c6f7ff] dark:bg-cyan-950 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-[#0A2540] dark:text-cyan-300 shadow-sm group-hover:scale-105 transition-transform">
+        <span class="material-symbols-outlined text-[20px]" data-icon="local_hospital">local_hospital</span>
+      </div>
+      <div class="flex flex-col text-left">
+        <span class="font-headline font-bold text-lg leading-tight tracking-tight text-[#0A2540] dark:text-white">
+          VANGA Medical
+        </span>
+        <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          Yopougon Niangon
+        </span>
+      </div>
+    </a>
+
+    <!-- Center navigation links -->
+    <nav class="hidden lg:flex items-center gap-7">
+      {navLinks.map((link) => (
+        <a
+          class="text-slate-600 dark:text-slate-300 font-medium text-sm hover:text-[#0A2540] dark:hover:text-cyan-300 transition-colors duration-200"
+          href={link.href}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Right actions: Hotline + RDV + Light/Dark Toggle -->
+    <div class="flex items-center gap-3">
+      <!-- Phone number indicator -->
+      <a
+        class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-all text-xs font-semibold"
+        href={`tel:${phoneTel}`}
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span class="material-symbols-outlined text-[15px] text-emerald-600 dark:text-emerald-400" data-icon="call">call</span>
+        <span>Appelez-nous</span>
+      </a>
+
+      <!-- Prominent Primary Button: Prise de RDV -->
+      <a
+        class="active:scale-[0.98] inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#c6f7ff] dark:bg-cyan-400 text-[#0A2540] dark:text-slate-950 font-bold text-xs sm:text-sm border border-cyan-200 dark:border-cyan-300 shadow-sm hover:bg-[#b0f2fd] dark:hover:bg-cyan-300 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        href="#portail"
+        data-open-booking-modal
+      >
+        <span>Prise de RDV</span>
+        <span class="material-symbols-outlined text-[17px]" data-icon="calendar_month">calendar_month</span>
+      </a>
+
+      <!-- Sun/Moon Light/Dark Toggle Button -->
+      <button
+        id="theme-toggle"
+        class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-amber-300 flex items-center justify-center transition-colors"
+        title="Basculer le mode sombre / clair"
+        type="button"
+        aria-label="Mode Sombre"
+      >
+        <span id="theme-toggle-icon" class="material-symbols-outlined text-[18px]">light_mode</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  function setupThemeToggle() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-toggle-icon');
+
+    const updateIcon = (isDark: boolean) => {
+      if (icon) {
+        icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+      }
+    };
+
+    // Set initial icon based on current class
+    updateIcon(document.documentElement.classList.contains('dark'));
+
+    toggleBtn?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateIcon(isDark);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupThemeToggle);
+  } else {
+    setupThemeToggle();
+  }
+</script>

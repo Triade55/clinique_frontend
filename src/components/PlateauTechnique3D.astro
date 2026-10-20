@@ -1,0 +1,340 @@
+---
+interface TechCard {
+  icon: string;
+  badge: string;
+  badgeClass: string;
+  title: string;
+  description: string;
+}
+
+const techCards: TechCard[] = [
+  {
+    icon: 'radiology',
+    badge: 'PRÉCISION 99.8%',
+    badgeClass: 'text-[#0A2540] dark:text-cyan-300 bg-[#e8fbff] dark:bg-cyan-950/60 border-[#c6f7ff] dark:border-cyan-800',
+    title: 'Tomographie Numérique & Échographie 4D',
+    description: 'Reconstructions anatomiques stéréoscopiques permettant une planification diagnostique et chirurgicale sans faille avant toute intervention.',
+  },
+  {
+    icon: 'cable',
+    badge: 'FIBRE DIRECTE',
+    badgeClass: 'text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800',
+    title: 'Télé-expertise Internationale Directe',
+    description: 'Liaison sécurisée reliant le plateau de Yopougon aux réseaux de professeurs hospitaliers partenaires en Europe et en Afrique de l\'Ouest.',
+  },
+  {
+    icon: 'security_update_good',
+    badge: 'ISO 27001 CLOUD',
+    badgeClass: 'text-blue-800 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 border-blue-200 dark:border-blue-800',
+    title: 'Archivage Immédiat sur Portail Django',
+    description: 'Vos résultats d\'imagerie et comptes-rendus biologiques sont compilés et accessibles sous 60 minutes dans votre espace sécurisé.',
+  },
+];
+---
+
+<section class="py-24 px-4 md:px-8 max-w-7xl mx-auto relative bg-[#F1F5F9] dark:bg-slate-900 rounded-3xl my-8 border border-slate-200/60 dark:border-slate-800 transition-colors duration-200 overflow-hidden" id="plateau-3d">
+  <!-- Subtle background glow -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12 relative z-10">
+    <div class="reveal">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-3 hover:scale-105 transition-transform">
+        <span class="material-symbols-outlined text-[14px]" data-icon="view_in_ar">view_in_ar</span>
+        PLATEAU TECHNIQUE 3.0
+      </div>
+      <h2 class="font-headline text-3xl md:text-4xl text-[#0A2540] dark:text-white font-extrabold tracking-tight">
+        Exploration Médicale 3D & Diagnostic Assisté
+      </h2>
+    </div>
+    <p class="reveal stagger-1 font-body text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-md">
+      Imagerie volumétrique avancée et simulation biomoléculaire en temps réel pour une précision diagnostique inégalée à Abidjan.
+    </p>
+  </div>
+
+  <!-- Scrollytelling Bento Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch relative z-10">
+    <!-- Left: Interactive Three.js Animation Viewport Container -->
+    <div class="reveal-scale stagger-2 lg:col-span-7 relative glass-card-elevated rounded-3xl p-3 min-h-[500px] flex flex-col justify-between overflow-hidden border border-[#c6f7ff] dark:border-cyan-900/40 shadow-xl group">
+      <div class="relative w-full h-[500px] rounded-2xl overflow-hidden bg-slate-900 shadow-inner">
+        <!-- Canvas Container for Three.js -->
+        <div id="threejs-canvas-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+        <!-- Scanning Beam Animation -->
+        <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent pointer-events-none animate-scanline"></div>
+
+        <!-- Telemetry Overlays -->
+        <div class="absolute top-4 left-4 z-10 flex flex-wrap gap-2 pointer-events-none">
+          <span class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 text-[#0A2540] dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-md border border-[#c6f7ff] dark:border-cyan-900/50 backdrop-blur-md">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Modèle Moléculaire & ADN
+          </span>
+          <span class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 text-[#0A2540] dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-md border border-[#c6f7ff] dark:border-cyan-900/50 backdrop-blur-md">
+            <span class="material-symbols-outlined text-[14px] text-cyan-500 animate-spin" style="animation-duration: 8s" data-icon="sync">sync</span>
+            Rotation 360° en temps réel
+          </span>
+        </div>
+
+        <div class="absolute bottom-4 right-4 z-10 pointer-events-none">
+          <div class="px-4 py-2 rounded-xl bg-white/95 dark:bg-slate-900/95 border border-[#c6f7ff] dark:border-cyan-900/50 text-right shadow-lg backdrop-blur-md">
+            <div class="text-[11px] font-bold text-cyan-800 dark:text-cyan-400 uppercase tracking-wide">RÉSOLUTION SCANNER</div>
+            <div class="font-mono text-sm text-[#0A2540] dark:text-white font-extrabold">0.12 mm Ultra-Fin</div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 z-10 pointer-events-none">
+          <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300 text-xs font-medium bg-white/95 dark:bg-slate-900/95 px-3 py-1.5 rounded-full border border-[#c6f7ff] dark:border-cyan-900/50 shadow backdrop-blur-md">
+            <span class="material-symbols-outlined text-[15px] text-cyan-500 animate-bounce" data-icon="touch_app">touch_app</span>
+            <span>Interagissez avec le modèle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Technical Depth & Operational Integrity Stack -->
+    <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+      {techCards.map((card, idx) => (
+        <div class={`reveal stagger-${idx + 2} glass-card-light card-hover-effect shimmer-card p-6 rounded-3xl hover:border-cyan-300 dark:hover:border-cyan-500 flex flex-col gap-3 group`}>
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-[#c6f7ff] dark:bg-slate-800 border border-transparent dark:border-cyan-900/40 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center font-bold group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <span class="material-symbols-outlined" data-icon={card.icon}>{card.icon}</span>
+            </div>
+            <span class={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${card.badgeClass}`}>
+              {card.badge}
+            </span>
+          </div>
+          <h3 class="font-headline text-lg text-[#0A2540] dark:text-white font-bold group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
+            {card.title}
+          </h3>
+          <p class="font-body text-sm text-slate-600 dark:text-slate-300">
+            {card.description}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Visual Showcase Banner of the Physical Imaging Suite -->
+    <div class="lg:col-span-12 mt-4 reveal stagger-5 rounded-3xl overflow-hidden glass-card-elevated border border-[#c6f7ff] dark:border-cyan-900/40 p-3 shadow-xl group">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-5 h-[220px] rounded-2xl overflow-hidden relative">
+          <img
+            src="/images/plateau-technique.jpg"
+            alt="Suite d'Imagerie Haute Définition & Échographie 4D VANGA Medical"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+          <div class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-bold text-cyan-300 border border-cyan-800 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Salle d'Examen & Scanner Ouvert
+          </div>
+        </div>
+        <div class="md:col-span-7 p-4 sm:pr-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-2">
+            ENVIRONNEMENT SÉCURISÉ & SILENCIEUX
+          </div>
+          <h4 class="font-headline text-xl sm:text-2xl font-bold text-[#0A2540] dark:text-white mb-2">
+            Technologie d'Imagerie & Diagnostic en Temps Réel
+          </h4>
+          <p class="font-body text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+            Notre centre est doté d'équipements de pointe réduisant le temps d'examen tout en maximisant la précision diagnostique. Résultats et comptes-rendus compilés en direct sur votre portail patient chiffré.
+          </p>
+          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <span class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              Doses de rayonnement minimisées
+            </span>
+            <span class="flex items-center gap-1 text-cyan-700 dark:text-cyan-300">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>
+              Reconstructions 3D volumétriques
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Client-side Three.js interactive medical script -->
+<script>
+  import * as THREE from 'three';
+
+  function initThreeJS() {
+    const container = document.getElementById('threejs-canvas-container');
+    if (!container) return;
+
+    // Prevent duplicate canvases
+    container.innerHTML = '';
+
+    const width = container.clientWidth || 600;
+    const height = container.clientHeight || 500;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 18);
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xc6f7ff, 1.2);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
+    dirLight.position.set(10, 20, 15);
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0xc6f7ff, 3.5, 50);
+    pointLight.position.set(0, 0, 5);
+    scene.add(pointLight);
+
+    const redLight = new THREE.PointLight(0xef4444, 1.8, 30);
+    redLight.position.set(-6, -4, 4);
+    scene.add(redLight);
+
+    // Group for the entire 3D medical artifact
+    const medicalGroup = new THREE.Group();
+    scene.add(medicalGroup);
+
+    // Double Helix DNA
+    const helixPointsCount = 80;
+    const radius = 3.2;
+    const heightSpread = 12;
+
+    const sphereGeo = new THREE.SphereGeometry(0.18, 16, 16);
+    const sphereMat1 = new THREE.MeshPhongMaterial({
+      color: 0xc6f7ff,
+      emissive: 0x0A2540,
+      shininess: 90,
+      transparent: true,
+      opacity: 0.95,
+    });
+    const sphereMat2 = new THREE.MeshPhongMaterial({
+      color: 0x38bdf8,
+      emissive: 0x0369a1,
+      shininess: 100,
+      transparent: true,
+      opacity: 0.9,
+    });
+    const connectorMat = new THREE.MeshBasicMaterial({
+      color: 0xc6f7ff,
+      transparent: true,
+      opacity: 0.45,
+    });
+
+    for (let i = 0; i < helixPointsCount; i++) {
+      const t = (i / helixPointsCount) * Math.PI * 4;
+      const y = (i / helixPointsCount - 0.5) * heightSpread;
+
+      const x1 = Math.cos(t) * radius;
+      const z1 = Math.sin(t) * radius;
+
+      const x2 = Math.cos(t + Math.PI) * radius;
+      const z2 = Math.sin(t + Math.PI) * radius;
+
+      const m1 = new THREE.Mesh(sphereGeo, sphereMat1);
+      m1.position.set(x1, y, z1);
+      medicalGroup.add(m1);
+
+      const m2 = new THREE.Mesh(sphereGeo, sphereMat2);
+      m2.position.set(x2, y, z2);
+      medicalGroup.add(m2);
+
+      if (i % 2 === 0) {
+        const p1 = new THREE.Vector3(x1, y, z1);
+        const p2 = new THREE.Vector3(x2, y, z2);
+        const dist = p1.distanceTo(p2);
+        const cylinderGeo = new THREE.CylinderGeometry(0.04, 0.04, dist, 8);
+        const cylinder = new THREE.Mesh(cylinderGeo, connectorMat);
+
+        cylinder.position.copy(p1).add(p2).multiplyScalar(0.5);
+        cylinder.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p2.clone().sub(p1).normalize());
+        medicalGroup.add(cylinder);
+      }
+    }
+
+    // Floating particles
+    const particlesCount = 350;
+    const particlePositions = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+      const r = 4.5 + Math.random() * 5.0;
+      particlePositions[i] = r * Math.sin(phi) * Math.cos(theta);
+      particlePositions[i + 1] = (Math.random() - 0.5) * 14.0;
+      particlePositions[i + 2] = r * Math.sin(phi) * Math.sin(theta);
+    }
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: 0xc6f7ff,
+      size: 0.12,
+      transparent: true,
+      opacity: 0.8,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    medicalGroup.add(particles);
+
+    // Central glowing core
+    const coreGeo = new THREE.IcosahedronGeometry(1.6, 2);
+    const coreMat = new THREE.MeshPhongMaterial({
+      color: 0xc6f7ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.55,
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    medicalGroup.add(coreMesh);
+
+    // Interaction handlers
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      mouseX = ((e.clientX - rect.left) / rect.width) - 0.5;
+      mouseY = ((e.clientY - rect.top) / rect.height) - 0.5;
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+
+    const clock = new THREE.Clock();
+    let animId: number;
+
+    function animate() {
+      animId = requestAnimationFrame(animate);
+      const elapsed = clock.getElapsedTime();
+
+      medicalGroup.rotation.y = elapsed * 0.45;
+      medicalGroup.rotation.x = Math.sin(elapsed * 0.3) * 0.15;
+      coreMesh.rotation.y = -elapsed * 0.7;
+      coreMesh.rotation.z = elapsed * 0.2;
+
+      targetX += (mouseX * 1.5 - targetX) * 0.05;
+      targetY += (mouseY * 1.5 - targetY) * 0.05;
+
+      medicalGroup.position.x = targetX * 1.8;
+      medicalGroup.position.y = -targetY * 1.8;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    const handleResize = () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+
+    window.addEventListener('resize', handleResize);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThreeJS);
+  } else {
+    initThreeJS();
+  }
+</script>

@@ -1,0 +1,314 @@
+---
+interface PortalFeature {
+  icon: string;
+  title: string;
+  description: string;
+  badgeIcon?: string;
+  badgeText: string;
+  badgeClass: string;
+}
+
+const features: PortalFeature[] = [
+  {
+    icon: 'event_available',
+    title: 'RDV en Temps Réel',
+    description: 'Choisissez votre créneau horaire avec le spécialiste de votre choix, synchronisé directement sur l\'API Django.',
+    badgeText: 'Synchronisation instantanée',
+    badgeClass: 'text-emerald-700 dark:text-emerald-400',
+  },
+  {
+    icon: 'description',
+    title: 'Facturation & IPP Permanent',
+    description: 'Attribution de votre identifiant patient unique (PAT-YYYY-XXXX) et facture émise automatiquement au guichet.',
+    badgeIcon: 'receipt_long',
+    badgeText: 'Dossier Sécurisé',
+    badgeClass: 'text-cyan-800 dark:text-cyan-300',
+  },
+  {
+    icon: 'chat',
+    title: 'Suivi & Alertes WhatsApp',
+    description: 'Suivi transparent de votre réservation (RES-XXXX), report ou annulation simplifiée en ligne.',
+    badgeIcon: 'notifications_active',
+    badgeText: 'Traçabilité 24h/24',
+    badgeClass: 'text-slate-700 dark:text-slate-300',
+  },
+];
+---
+
+<section class="py-20 px-4 md:px-8 max-w-7xl mx-auto" id="portail">
+  <div class="reveal-scale glass-card-elevated rounded-3xl p-8 md:p-12 relative overflow-hidden border border-[#c6f7ff] dark:border-cyan-900/40 shadow-xl">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="reveal inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-3 hover:scale-105 transition-transform">
+        <span class="material-symbols-outlined text-[14px]" data-icon="terminal">terminal</span>
+        ARCHITECTURE DJANGO REST CONNECTÉE VIA AXIOS
+      </div>
+      <h2 class="reveal stagger-1 font-headline text-3xl md:text-4xl text-[#0A2540] dark:text-white font-extrabold tracking-tight mb-4">
+        Connecté à votre Portail Patient
+      </h2>
+      <p class="reveal stagger-2 font-body text-sm md:text-base text-slate-600 dark:text-slate-300">
+        Gagnez un temps précieux. Réservez une consultation en 3 étapes, ou retrouvez en un clic le statut de votre réservation en cours grâce à l'API Django.
+      </p>
+    </div>
+
+    <!-- 3 Feature Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      {features.map((feat, idx) => (
+        <div class={`reveal-scale stagger-${idx + 2} p-6 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between card-hover-effect shimmer-card group`}>
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-[#c6f7ff] dark:bg-slate-800 text-[#0A2540] dark:text-cyan-300 flex items-center justify-center font-bold group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                <span class="material-symbols-outlined" data-icon={feat.icon}>{feat.icon}</span>
+              </div>
+              <span class="font-headline text-base text-[#0A2540] dark:text-white font-bold group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">{feat.title}</span>
+            </div>
+            <p class="font-body text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+              {feat.description}
+            </p>
+          </div>
+          <div class={`text-xs font-semibold flex items-center gap-1.5 ${feat.badgeClass}`}>
+            {feat.badgeIcon ? (
+              <span class="material-symbols-outlined text-[15px] group-hover:scale-125 transition-transform" data-icon={feat.badgeIcon}>{feat.badgeIcon}</span>
+            ) : (
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            )}
+            <span>{feat.badgeText}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Interactive Appointment Lookup Box (Powered by Axios POST /api/public/appointments/lookup/) -->
+    <div class="reveal stagger-4 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/90 border border-cyan-200 dark:border-cyan-900/50 shadow-md mb-8">
+      <div class="max-w-3xl mx-auto">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-[20px]">manage_search</span>
+          </div>
+          <div>
+            <h3 class="font-headline text-lg sm:text-xl font-bold text-[#0A2540] dark:text-white">
+              Suivi en direct de votre Rendez-vous
+            </h3>
+            <p class="font-body text-xs text-slate-500 dark:text-slate-400">
+              Entrez votre code de réservation (<code class="text-cyan-700 dark:text-cyan-300 font-mono">RES-YYYYMM-XXXX</code>) et votre numéro de téléphone pour voir l'avancement.
+            </p>
+          </div>
+        </div>
+
+        <form id="lookup-form" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
+          <div>
+            <label for="lookup_reference" class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">
+              Référence (Ex: RES-202610-0002) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="lookup_reference"
+              placeholder="RES-202610-XXXX"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-[#0A2540] dark:text-white font-mono uppercase focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+            />
+          </div>
+
+          <div>
+            <label for="lookup_phone" class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">
+              Numéro de téléphone portable <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="tel"
+              id="lookup_phone"
+              placeholder="0708091011"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-[#0A2540] dark:text-white focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+            />
+          </div>
+
+          <div class="flex items-end">
+            <button
+              type="submit"
+              id="lookup-submit-btn"
+              class="w-full py-2.5 px-4 rounded-xl bg-[#0A2540] dark:bg-cyan-400 text-white dark:text-slate-950 font-bold text-xs hover:bg-slate-800 dark:hover:bg-cyan-300 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+            >
+              <span class="material-symbols-outlined text-[16px]" id="lookup-icon">search</span>
+              <span id="lookup-btn-text">Vérifier mon Statut</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Lookup Result Container -->
+        <div id="lookup-result" class="hidden mt-4 p-4 rounded-xl border"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Action Banner inside Portal -->
+    <div class="reveal stagger-5 p-6 md:p-8 rounded-2xl bg-[#e8fbff] dark:bg-slate-900/90 border border-[#c6f7ff] dark:border-cyan-900/50 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm card-hover-effect">
+      <div class="flex items-center gap-4 text-left">
+        <div class="w-12 h-12 rounded-full bg-[#0A2540] dark:bg-cyan-950 text-[#c6f7ff] dark:text-cyan-300 border border-transparent dark:border-cyan-800 flex items-center justify-center font-extrabold text-lg shrink-0 shadow-md">
+          V
+        </div>
+        <div>
+          <div class="font-headline text-base md:text-lg text-[#0A2540] dark:text-white font-bold">Plateforme Médicale VANGA Live</div>
+          <div class="font-body text-xs md:text-sm text-slate-600 dark:text-slate-400">Intégration directe avec le secrétariat et le plateau technique</div>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+        <button
+          type="button"
+          data-open-booking-modal
+          class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#0A2540] dark:bg-cyan-400 text-white dark:text-slate-950 font-bold text-sm text-center hover:bg-slate-800 dark:hover:bg-cyan-300 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+        >
+          Prendre RDV en Ligne
+        </button>
+        <a
+          href="tel:+2250768280690"
+          class="w-full sm:w-auto px-5 py-2.5 rounded-full bg-white/80 dark:bg-slate-800 text-[#0A2540] dark:text-slate-200 font-semibold text-xs text-center border border-slate-200 dark:border-slate-700 hover:border-cyan-400 hover:scale-105 active:scale-95 transition-all inline-flex items-center justify-center gap-2"
+        >
+          <span class="material-symbols-outlined text-rose-500 text-[16px]">call</span>
+          <span>Appelez-nous</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { lookupAppointment, cancelAppointment } from '../services/api';
+
+  function setupLookupForm() {
+    const form = document.getElementById('lookup-form') as HTMLFormElement | null;
+    const refInput = document.getElementById('lookup_reference') as HTMLInputElement | null;
+    const phoneInput = document.getElementById('lookup_phone') as HTMLInputElement | null;
+    const submitBtn = document.getElementById('lookup-submit-btn') as HTMLButtonElement | null;
+    const btnText = document.getElementById('lookup-btn-text');
+    const icon = document.getElementById('lookup-icon');
+    const resultBox = document.getElementById('lookup-result');
+
+    if (!form || !refInput || !phoneInput || !resultBox) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ref = refInput.value.trim().toUpperCase();
+      const phone = phoneInput.value.trim();
+
+      if (!ref || !phone) return;
+
+      if (submitBtn && btnText && icon) {
+        submitBtn.disabled = true;
+        btnText.textContent = 'Recherche...';
+        icon.textContent = 'sync';
+        icon.classList.add('animate-spin');
+      }
+
+      resultBox.classList.remove('hidden');
+      resultBox.className = 'mt-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-500 flex items-center justify-center gap-2';
+      resultBox.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span><span>Interrogation de la base de données...</span>';
+
+      try {
+        const results = await lookupAppointment({ reference: ref, phone_number: phone });
+
+        if (!results || results.length === 0) {
+          resultBox.className = 'mt-4 p-4 rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 text-xs';
+          resultBox.innerHTML = `
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <span class="material-symbols-outlined text-[18px]">warning</span>
+              <span>Aucun rendez-vous trouvé</span>
+            </div>
+            <div>Vérifiez le numéro de référence (ex: RES-202610-0002) et le numéro de téléphone utilisé lors de la prise de rendez-vous.</div>
+          `;
+          return;
+        }
+
+        const appt = results[0];
+
+        // Format status badge
+        let statusBadgeClass = 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300';
+        if (appt.status === 'CONFIRME') statusBadgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+        if (appt.status === 'EN_ATTENTE') statusBadgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+        if (appt.status === 'EN_CONSULTATION') statusBadgeClass = 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300';
+        if (appt.status === 'ANNULE') statusBadgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+
+        resultBox.className = 'mt-4 p-4 rounded-2xl border border-cyan-300 dark:border-cyan-800 bg-[#e8fbff] dark:bg-slate-800/90 text-xs text-[#0A2540] dark:text-slate-100 shadow-sm';
+        resultBox.innerHTML = `
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-cyan-200 dark:border-slate-700 pb-3 mb-3">
+            <div>
+              <span class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Dossier de Réservation</span>
+              <div class="font-headline text-base font-extrabold text-[#0A2540] dark:text-cyan-300">${appt.booking_reference}</div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold ${statusBadgeClass}">
+              ${appt.status_label || appt.status}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+            <div>
+              <span class="text-slate-500 dark:text-slate-400 block text-[10px]">Patient</span>
+              <span class="font-bold">${appt.full_name}</span>
+            </div>
+            <div>
+              <span class="text-slate-500 dark:text-slate-400 block text-[10px]">Spécialité</span>
+              <span class="font-bold">${appt.specialty_name}</span>
+            </div>
+            <div>
+              <span class="text-slate-500 dark:text-slate-400 block text-[10px]">Date & Heure</span>
+              <span class="font-bold text-cyan-800 dark:text-cyan-300">${appt.appointment_date} à ${appt.appointment_time}</span>
+            </div>
+          </div>
+
+          ${
+            appt.status === 'EN_ATTENTE' || appt.status === 'CONFIRME'
+              ? `
+            <div class="pt-2 border-t border-cyan-200 dark:border-slate-700 flex justify-end">
+              <button
+                type="button"
+                id="cancel-appt-btn"
+                class="px-3 py-1.5 rounded-xl border border-rose-300 text-rose-700 dark:text-rose-400 text-[11px] font-bold hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all cursor-pointer"
+              >
+                Annuler ce rendez-vous
+              </button>
+            </div>
+          `
+              : ''
+          }
+        `;
+
+        // Handle cancellation
+        const cancelBtn = document.getElementById('cancel-appt-btn');
+        cancelBtn?.addEventListener('click', async () => {
+          if (!confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) return;
+
+          cancelBtn.textContent = 'Annulation en cours...';
+          (cancelBtn as HTMLButtonElement).disabled = true;
+
+          try {
+            await cancelAppointment({
+              reference: appt.booking_reference,
+              phone_number: phone,
+              reason: 'Annulation demandée par le patient depuis le portail web',
+            });
+            alert('Votre rendez-vous a bien été annulé.');
+            form.dispatchEvent(new Event('submit'));
+          } catch (cancelErr: any) {
+            alert('Impossible d’annuler le rendez-vous. Contactez le secrétariat.');
+            cancelBtn.textContent = 'Annuler ce rendez-vous';
+            (cancelBtn as HTMLButtonElement).disabled = false;
+          }
+        });
+      } catch (err: any) {
+        console.error('Lookup failed via Axios:', err);
+        resultBox.className = 'mt-4 p-4 rounded-xl border border-rose-300 bg-rose-50 dark:bg-rose-950/40 text-rose-700 text-xs';
+        resultBox.innerHTML = 'Erreur lors de la communication avec le serveur. Veuillez réessayer ultérieurement.';
+      } finally {
+        if (submitBtn && btnText && icon) {
+          submitBtn.disabled = false;
+          btnText.textContent = 'Vérifier mon Statut';
+          icon.textContent = 'search';
+          icon.classList.remove('animate-spin');
+        }
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupLookupForm);
+  } else {
+    setupLookupForm();
+  }
+</script>

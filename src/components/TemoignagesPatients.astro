@@ -1,0 +1,116 @@
+---
+// Verified Patient Testimonials & Social Proof
+// Pattern: ui-ux-pro-max Social Proof Before CTA
+interface Temoignage {
+  nom: string;
+  quartier: string;
+  specialite: string;
+  note: number;
+  date: string;
+  commentaire: string;
+  initials: string;
+}
+
+const temoignages: Temoignage[] = [
+  {
+    nom: 'Aïssata K.',
+    quartier: 'Yopougon Maroc',
+    specialite: 'Maternité & Pôle Mère-Enfant',
+    note: 5,
+    date: 'Il y a 2 semaines',
+    commentaire: 'J\'ai accouché de mon deuxième fils à la clinique VANGA. Les sages-femmes sont d\'une douceur et d\'un professionnalisme rares. La chambre individuelle est impeccable, digne d\'un hôtel haut de gamme.',
+    initials: 'AK',
+  },
+  {
+    nom: 'Mamadou D.',
+    quartier: 'Niangon Sud à droite',
+    specialite: 'Cardiologie & Hypertension',
+    note: 5,
+    date: 'Il y a 1 mois',
+    commentaire: 'Pris en charge en urgence suite à un malaise hypertensif. En 10 minutes chrono, ECG réalisé et diagnostic posé par le Dr Brou. Leur réactivité m\'a littéralement sauvé.',
+    initials: 'MD',
+  },
+  {
+    nom: 'Serge & Estelle T.',
+    quartier: 'Yopougon Selmer',
+    specialite: 'Pédiatrie & Urgence Nuit',
+    note: 5,
+    date: 'Il y a 3 semaines',
+    commentaire: 'Arrivés à 2h du matin avec notre fille de 18 mois fiévreuse. Médecin urgentiste et pédiatre sur place immédiatement, sans attente interminable. Merci infiniment à toute l\'équipe.',
+    initials: 'ST',
+  },
+];
+---
+
+<section class="py-20 px-4 md:px-8 max-w-7xl mx-auto" id="temoignages">
+  <div class="text-center max-w-3xl mx-auto mb-16">
+    <div class="reveal inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-3 hover:scale-105 transition-transform">
+      <span class="material-symbols-outlined text-[14px]">reviews</span>
+      RETROUVEZ LA CONFIANCE
+    </div>
+    <h2 class="reveal stagger-1 font-headline text-3xl md:text-5xl text-[#0A2540] dark:text-white font-extrabold tracking-tight mb-4">
+      Ce que disent nos Patients & Familles
+    </h2>
+    <p class="reveal stagger-2 font-body text-base md:text-lg text-slate-600 dark:text-slate-300">
+      Plus de 12 500 patients nous confient leur santé chaque année à Yopougon. Découvrez leurs témoignages authentiques.
+    </p>
+
+    <!-- Google Reviews Rating Pill -->
+    <div class="reveal stagger-3 inline-flex items-center gap-3 mt-6 px-5 py-2.5 rounded-full bg-white/90 dark:bg-slate-800 border border-[#c6f7ff] dark:border-cyan-900/50 shadow-sm">
+      <div class="flex items-center gap-1 text-amber-500">
+        <span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+        <span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+        <span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+        <span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+        <span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+      </div>
+      <span class="font-headline font-extrabold text-sm text-[#0A2540] dark:text-white">4.9 / 5</span>
+      <span class="text-slate-400">|</span>
+      <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">340+ avis vérifiés Google & Portail</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {temoignages.map((t, idx) => (
+      <div class={`reveal-scale stagger-${idx + 1} glass-card-light card-hover-effect shimmer-card rounded-3xl p-7 flex flex-col justify-between border border-[#c6f7ff] dark:border-cyan-900/40 hover:border-cyan-400 dark:hover:border-cyan-500 shadow-md hover:shadow-xl transition-all group`}>
+        <div>
+          <!-- Star rating & verification badge -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-0.5 text-amber-500">
+              {Array.from({ length: t.note }).map(() => (
+                <span class="material-symbols-outlined text-[16px]" data-weight="fill">star</span>
+              ))}
+            </div>
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">
+              <span class="material-symbols-outlined text-[13px]">verified</span>
+              Soin vérifié
+            </span>
+          </div>
+
+          <!-- Quote -->
+          <p class="font-body text-sm text-slate-700 dark:text-slate-200 leading-relaxed mb-6 italic">
+            "{t.commentaire}"
+          </p>
+        </div>
+
+        <!-- Author info -->
+        <div class="pt-4 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-[#c6f7ff] dark:bg-cyan-950 text-[#0A2540] dark:text-cyan-300 font-headline font-bold text-sm flex items-center justify-center border border-cyan-200 dark:border-cyan-800">
+              {t.initials}
+            </div>
+            <div>
+              <div class="font-headline font-bold text-xs text-[#0A2540] dark:text-white">
+                {t.nom}
+              </div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                {t.quartier} • <span class="text-cyan-700 dark:text-cyan-300 font-medium">{t.specialite}</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400">{t.date}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

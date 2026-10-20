@@ -1,0 +1,113 @@
+---
+// Localisation & Accès Component
+---
+
+<section class="py-20 px-4 md:px-8 max-w-7xl mx-auto" id="localisation">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+    <!-- Left: Clinic Coordinates & Quick Actions -->
+    <div class="reveal-scale lg:col-span-5 glass-card-elevated p-8 rounded-3xl flex flex-col justify-between border border-[#c6f7ff] dark:border-cyan-900/40 shadow-xl">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-4 hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-[14px]" data-icon="pin_drop">pin_drop</span>
+          PLAN D'ACCÈS STRATÉGIQUE
+        </div>
+
+        <h2 class="font-headline text-2xl md:text-3xl text-[#0A2540] dark:text-white font-extrabold tracking-tight mb-4">
+          Nous rejoindre à Niangon Sud à gauche
+        </h2>
+
+        <p class="font-body text-sm text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+          Située au cœur de la commune de Yopougon, la clinique VANGA Medical bénéficie d'une accessibilité directe et sécurisée avec un parking gardé 24h/24.
+        </p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start gap-3 group">
+            <span class="material-symbols-outlined text-cyan-700 dark:text-cyan-400 text-[22px] mt-0.5 group-hover:scale-110 transition-transform" data-icon="apartment">apartment</span>
+            <div>
+              <div class="font-headline text-sm text-[#0A2540] dark:text-white font-bold">Adresse Clinique</div>
+              <div class="font-body text-xs text-slate-600 dark:text-slate-400">Rue Awa SANOGO, Niangon Sud à gauche, Yopougon, Abidjan, Côte d'Ivoire</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 group">
+            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[22px] mt-0.5 group-hover:scale-110 transition-transform" data-icon="schedule">schedule</span>
+            <div>
+              <div class="font-headline text-sm text-[#0A2540] dark:text-white font-bold">Permanence des Soins</div>
+              <div class="font-body text-xs text-slate-600 dark:text-slate-400">Urgences, Maternité & Laboratoire : 24h/24 et 7j/7 sans interruption</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 group">
+            <span class="material-symbols-outlined text-cyan-700 dark:text-cyan-400 text-[22px] mt-0.5 group-hover:scale-110 transition-transform" data-icon="local_pharmacy">local_pharmacy</span>
+            <div>
+              <div class="font-headline text-sm text-[#0A2540] dark:text-white font-bold">Pharmacie Partenaire</div>
+              <div class="font-body text-xs text-slate-600 dark:text-slate-400">Pharmacie de garde à 150 mètres du centre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct WhatsApp / Call Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-200 dark:border-slate-800">
+        <a
+          class="flex-1 py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-sm group"
+          href="https://wa.me/2250768280690"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="material-symbols-outlined text-[18px] group-hover:rotate-12 transition-transform" data-icon="chat">chat</span>
+          WhatsApp Clinique
+        </a>
+        <a
+          class="flex-1 py-3 px-4 rounded-full bg-[#c6f7ff] dark:bg-cyan-400 hover:bg-[#b0f2fd] dark:hover:bg-cyan-300 text-[#0A2540] dark:text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all border border-cyan-200 dark:border-cyan-300 shadow-sm"
+          href="tel:+2250768280690"
+        >
+          <span class="material-symbols-outlined text-[18px]" data-icon="call">call</span>
+          Appelez-nous
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Map Card with architectural presentation -->
+    <div class="reveal-scale stagger-2 lg:col-span-7 glass-card-elevated rounded-3xl p-3 min-h-[460px] flex flex-col justify-between overflow-hidden relative border border-[#c6f7ff] dark:border-cyan-900/40 shadow-xl group">
+      <div class="relative w-full h-[440px] rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+        <img
+          alt="Carte d'accès Yopougon Niangon Sud"
+          class="w-full h-full object-cover filter contrast-105 opacity-95 dark:opacity-85 group-hover:scale-105 transition-transform duration-700 ease-out"
+          src="/images/plan-acces-map.jpg"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent dark:from-slate-900/70"></div>
+
+        <!-- Floating Geo-Marker Overlay Card with floating animation -->
+        <div class="absolute top-6 left-6 max-w-xs bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-[#c6f7ff] dark:border-cyan-900/50 shadow-xl animate-float-slow">
+          <div class="flex items-center gap-2 text-[#0A2540] dark:text-white font-bold text-sm mb-1">
+            <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-[20px]" data-icon="medical_services">medical_services</span>
+            <span>VANGA Medical Center</span>
+          </div>
+          <p class="font-body text-xs text-slate-600 dark:text-slate-400 mb-3">
+            Repère : Niangon Sud à gauche, proximité Carrefour Koweit et Station.
+          </p>
+          <a
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 group/link"
+            href="https://maps.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Ouvrir dans Google Maps</span>
+            <span class="material-symbols-outlined text-[13px] group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" data-icon="open_in_new">open_in_new</span>
+          </a>
+        </div>
+
+        <!-- Ambulance Bay Quick Telemetry -->
+        <div class="absolute bottom-6 right-6 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 py-2.5 rounded-2xl flex items-center gap-3 border border-[#c6f7ff] dark:border-cyan-900/50 shadow-lg hover:scale-105 transition-transform">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+          <div class="text-left">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">ACCÈS AMBULANCIER</div>
+            <div class="font-mono text-emerald-700 dark:text-emerald-400 font-bold text-xs">SAS Déchocage Ouvert</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

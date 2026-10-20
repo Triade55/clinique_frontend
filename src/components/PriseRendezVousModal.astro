@@ -1,0 +1,898 @@
+---
+// Prise de Rendez-vous Interactive Modal Component
+// Connecté à l'API Django REST via Axios (API_DOCUMENTATION.md)
+// UI/UX Pro Max : Formulaire par étapes, créneaux en direct, confirmation instantanée
+---
+
+<div
+  id="booking-modal"
+  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="booking-modal-title"
+>
+  <!-- Backdrop overlay with blur -->
+  <div
+    id="booking-backdrop"
+    class="fixed inset-0 bg-slate-950/75 backdrop-blur-md transition-opacity duration-300 opacity-0"
+  ></div>
+
+  <!-- Modal Container -->
+  <div
+    id="booking-dialog"
+    class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-[#c6f7ff] dark:border-cyan-900/60 shadow-2xl p-6 sm:p-8 z-10 my-8 transform scale-95 opacity-0 transition-all duration-300 ease-out text-[#0A2540] dark:text-slate-100 max-h-[90vh] overflow-y-auto"
+  >
+    <!-- Close Button -->
+    <button
+      id="close-booking-modal"
+      type="button"
+      class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-all hover:scale-110 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+      aria-label="Fermer la fenêtre de prise de rendez-vous"
+    >
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+
+    <!-- Header -->
+    <div class="mb-6 pr-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-cyan text-xs font-bold uppercase tracking-wider mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>API SANTÉ CONNECTÉE • EN DIRECT</span>
+      </div>
+      <h3 id="booking-modal-title" class="font-headline text-2xl sm:text-3xl font-extrabold text-[#0A2540] dark:text-white tracking-tight">
+        Prise de Rendez-vous en Ligne
+      </h3>
+      <p class="font-body text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+        Centre VANGA Medical • Niangon Sud, Rue Awa SANOGO • Disponibilités vérifiées en temps réel
+      </p>
+    </div>
+
+    <!-- Wizard Steps Indicator -->
+    <div class="grid grid-cols-3 gap-2 mb-6 text-xs font-semibold" id="wizard-indicators">
+      <div class="step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-[#c6f7ff]/70 dark:bg-cyan-950/70 border border-cyan-300 dark:border-cyan-800 text-[#0A2540] dark:text-cyan-300 font-bold" data-step-indicator="1">
+        <span class="w-5 h-5 rounded-full bg-[#0A2540] text-white dark:bg-cyan-400 dark:text-slate-950 flex items-center justify-center text-[11px] font-bold">1</span>
+        <span class="truncate">Spécialité</span>
+      </div>
+      <div class="step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500" data-step-indicator="2">
+        <span class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400 flex items-center justify-center text-[11px] font-bold">2</span>
+        <span class="truncate">Créneau</span>
+      </div>
+      <div class="step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500" data-step-indicator="3">
+        <span class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400 flex items-center justify-center text-[11px] font-bold">3</span>
+        <span class="truncate">Patient</span>
+      </div>
+    </div>
+
+    <!-- Alert Banner (Error/Info) -->
+    <div id="booking-alert" class="hidden mb-4 p-3.5 rounded-2xl text-xs font-medium border flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" id="booking-alert-icon">info</span>
+        <span id="booking-alert-text">Message</span>
+      </div>
+      <button type="button" id="booking-alert-dismiss" class="text-xs opacity-70 hover:opacity-100">✕</button>
+    </div>
+
+    <!-- Booking Form Wizard -->
+    <form id="booking-form" class="space-y-6">
+      <!-- Step 1: Speciality Selection (Dynamically populated from Axios) -->
+      <div class="wizard-step" data-step="1">
+        <div class="flex items-center justify-between mb-3">
+          <label class="block font-headline text-sm font-bold text-[#0A2540] dark:text-white">
+            Sélectionnez la spécialité médicale <span class="text-rose-500">*</span>
+          </label>
+          <span id="specialty-count-badge" class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+            Chargement...
+          </span>
+        </div>
+
+        <!-- Specialty Grid Container -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4 max-h-[340px] overflow-y-auto pr-1" id="specialty-options">
+          <div class="col-span-2 sm:col-span-3 text-center py-8 text-slate-500 dark:text-slate-400 text-xs flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined animate-spin text-cyan-600 text-[28px]">progress_activity</span>
+            <span>Chargement des spécialités depuis l'API...</span>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button
+            type="button"
+            id="to-step-2"
+            class="px-6 py-3 rounded-full bg-[#c6f7ff] dark:bg-cyan-400 text-[#0A2540] dark:text-slate-950 font-bold text-sm inline-flex items-center gap-2 hover:bg-[#b0f2fd] dark:hover:bg-cyan-300 transition-all shadow-md focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none cursor-pointer"
+          >
+            <span>Choisir un créneau</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Date & Available Slots from Axios API -->
+      <div class="wizard-step hidden" data-step="2">
+        <div class="space-y-4">
+          <!-- Date Picker & Quick Days -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="booking-date-input" class="block font-headline text-sm font-bold text-[#0A2540] dark:text-white">
+                Date de consultation souhaitée <span class="text-rose-500">*</span>
+              </label>
+              <span class="text-[11px] text-cyan-700 dark:text-cyan-300 font-semibold" id="selected-specialty-summary">
+                Spécialité : ...
+              </span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+              <input
+                type="date"
+                id="booking-date-input"
+                name="appointment_date"
+                class="px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-[#0A2540] dark:text-white focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all flex-1"
+                required
+              />
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  data-quick-date="today"
+                  class="quick-date-btn px-3 py-2 rounded-xl text-xs font-bold border border-cyan-300 dark:border-cyan-800 bg-[#c6f7ff]/50 dark:bg-cyan-950/60 text-[#0A2540] dark:text-cyan-300 hover:bg-[#b0f2fd] transition-all"
+                >
+                  Aujourd'hui
+                </button>
+                <button
+                  type="button"
+                  data-quick-date="tomorrow"
+                  class="quick-date-btn px-3 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-cyan-400 transition-all"
+                >
+                  Demain
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slots Grid -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="block font-headline text-sm font-bold text-[#0A2540] dark:text-white">
+                Créneaux disponibles <span class="text-rose-500">*</span>
+              </label>
+              <span id="slots-status-text" class="text-[11px] text-slate-500 dark:text-slate-400">
+                Sélectionnez une heure
+              </span>
+            </div>
+
+            <div id="slots-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-[220px] overflow-y-auto p-1">
+              <div class="col-span-4 sm:col-span-6 text-center py-6 text-slate-400 text-xs">
+                Sélectionnez une date pour charger les créneaux disponibles.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4">
+          <button
+            type="button"
+            id="back-to-step-1"
+            class="px-5 py-2.5 rounded-full text-slate-600 dark:text-slate-400 font-semibold text-xs hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+          >
+            ← Retour aux spécialités
+          </button>
+          <button
+            type="button"
+            id="to-step-3"
+            class="px-6 py-3 rounded-full bg-[#c6f7ff] dark:bg-cyan-400 text-[#0A2540] dark:text-slate-950 font-bold text-sm inline-flex items-center gap-2 hover:bg-[#b0f2fd] dark:hover:bg-cyan-300 transition-all shadow-md focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none cursor-pointer"
+          >
+            <span>Mes coordonnées</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Patient Information -->
+      <div class="wizard-step hidden" data-step="3">
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="patient_prenom" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+                Prénom du patient <span class="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="patient_prenom"
+                name="first_name"
+                required
+                placeholder="Ex: Koffi"
+                class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all"
+              />
+            </div>
+            <div>
+              <label for="patient_nom" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+                Nom de famille <span class="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="patient_nom"
+                name="last_name"
+                required
+                placeholder="Ex: Assamoi"
+                class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="patient_tel" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+                Téléphone portable / WhatsApp <span class="text-rose-500">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500 select-none">
+                  🇨🇮 +225
+                </span>
+                <input
+                  type="tel"
+                  id="patient_tel"
+                  name="phone_number"
+                  required
+                  placeholder="0708091011"
+                  class="w-full pl-20 pr-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all"
+                />
+              </div>
+            </div>
+            <div>
+              <label for="patient_email" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+                Adresse email (optionnel)
+              </label>
+              <input
+                type="email"
+                id="patient_email"
+                name="email"
+                placeholder="patient@exemple.ci"
+                class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="patient_number" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+              Numéro de dossier patient / IPP (si déjà patient)
+            </label>
+            <input
+              type="text"
+              id="patient_number"
+              name="patient_number"
+              placeholder="Ex: PAT-2026-0001 (optionnel)"
+              class="w-full px-4 py-2 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all"
+            />
+          </div>
+
+          <div>
+            <label for="patient_motif" class="block font-headline text-xs font-bold text-[#0A2540] dark:text-white mb-1.5">
+              Motif de consultation (optionnel)
+            </label>
+            <textarea
+              id="patient_motif"
+              name="reason"
+              rows="2"
+              placeholder="Ex: Maux de gorge, renouvellement de traitement, bilan de santé..."
+              class="w-full px-4 py-2 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-[#0A2540] dark:text-white placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none transition-all resize-none"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Summary Chip -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-[#e8fbff] dark:bg-slate-800/80 border border-[#c6f7ff] dark:border-cyan-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+          <div>
+            <span class="text-slate-500 dark:text-slate-400 font-medium">RÉCAPITULATIF :</span>
+            <span id="booking-summary-text" class="font-bold text-[#0A2540] dark:text-cyan-300 ml-1">
+              Sélection en cours...
+            </span>
+          </div>
+          <div class="text-cyan-800 dark:text-cyan-300 font-bold" id="booking-summary-price">
+            Tarif : ...
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4">
+          <button
+            type="button"
+            id="back-to-step-2"
+            class="px-5 py-2.5 rounded-full text-slate-600 dark:text-slate-400 font-semibold text-xs hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+          >
+            ← Retour au créneau
+          </button>
+          <button
+            type="submit"
+            id="submit-booking"
+            class="px-7 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm inline-flex items-center gap-2 transition-all shadow-md hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none cursor-pointer"
+          >
+            <span class="material-symbols-outlined text-[18px]" id="submit-icon">check_circle</span>
+            <span id="submit-text">Confirmer mon Rendez-vous</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Success View (Displayed after successful POST to /api/public/appointments/) -->
+    <div id="booking-success" class="hidden py-4 text-center">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/70 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 animate-bounce">
+        <span class="material-symbols-outlined text-[36px]">task_alt</span>
+      </div>
+
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>RÉSERVATION CONFIRMÉE EN BASE</span>
+      </div>
+
+      <h4 class="font-headline text-2xl font-extrabold text-[#0A2540] dark:text-white mb-2">
+        Votre rendez-vous a bien été enregistré !
+      </h4>
+      <p class="font-body text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto mb-6">
+        Un SMS/WhatsApp de confirmation va vous être transmis. Conservez précieusement votre numéro de réservation ci-dessous.
+      </p>
+
+      <!-- Reservation Code Card -->
+      <div class="max-w-md mx-auto p-5 rounded-2xl bg-[#e8fbff] dark:bg-slate-800 border-2 border-cyan-400 dark:border-cyan-700 mb-6 text-left shadow-lg">
+        <div class="flex items-center justify-between border-b border-cyan-200 dark:border-slate-700 pb-3 mb-3">
+          <div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Numéro de Réservation</div>
+            <div class="font-headline text-xl sm:text-2xl font-extrabold text-[#0A2540] dark:text-cyan-300 tracking-wider" id="success-reference">
+              RES-XXXXXX-XXXX
+            </div>
+          </div>
+          <button
+            type="button"
+            id="copy-reference-btn"
+            class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-700 text-[#0A2540] dark:text-white text-xs font-bold border border-cyan-300 dark:border-slate-600 hover:scale-105 transition-all shadow-sm flex items-center gap-1 cursor-pointer"
+          >
+            <span class="material-symbols-outlined text-[16px]">content_copy</span>
+            <span id="copy-text">Copier</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">Patient :</span>
+            <span class="font-bold text-[#0A2540] dark:text-white" id="success-patient-name">...</span>
+          </div>
+          <div>
+            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">Spécialité :</span>
+            <span class="font-bold text-[#0A2540] dark:text-white" id="success-specialty">...</span>
+          </div>
+          <div class="mt-2">
+            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">Date & Heure :</span>
+            <span class="font-bold text-cyan-800 dark:text-cyan-300" id="success-datetime">...</span>
+          </div>
+          <div class="mt-2">
+            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">Tarif consultation :</span>
+            <span class="font-bold text-emerald-700 dark:text-emerald-400" id="success-price">...</span>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-cyan-200 dark:border-slate-700 flex items-center justify-between text-xs">
+          <span class="text-slate-500 dark:text-slate-400">Statut initial :</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold" id="success-status">
+            En attente de confirmation
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a
+          id="success-whatsapp-btn"
+          href="#"
+          target="_blank"
+          class="w-full sm:w-auto px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm inline-flex items-center justify-center gap-2 transition-all shadow-md hover:scale-105"
+        >
+          <span class="material-symbols-outlined text-[18px]">chat</span>
+          <span>Ouvrir sur WhatsApp</span>
+        </a>
+        <button
+          type="button"
+          id="reset-booking-btn"
+          class="w-full sm:w-auto px-6 py-3 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-slate-900 font-bold text-sm hover:scale-105 transition-all cursor-pointer"
+        >
+          Fermer la fenêtre
+        </button>
+      </div>
+    </div>
+
+    <!-- Emergency Hotline strip -->
+    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+      <span class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-rose-500 text-[17px] animate-pulse">emergency</span>
+        <span>Urgence vitale immédiate ?</span>
+      </span>
+      <a
+        href="tel:+2250768280690"
+        class="inline-flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-bold hover:underline"
+      >
+        <span class="material-symbols-outlined text-[15px]">call</span>
+        <span>Appelez le +225 07 68 28 06 90</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    getSpecialties,
+    getAvailableSlots,
+    bookAppointment,
+    type Specialty,
+    type Slot,
+  } from '../services/api';
+
+  function setupBookingModal() {
+    const modal = document.getElementById('booking-modal');
+    const backdrop = document.getElementById('booking-backdrop');
+    const dialog = document.getElementById('booking-dialog');
+    const closeBtn = document.getElementById('close-booking-modal');
+    const form = document.getElementById('booking-form') as HTMLFormElement | null;
+    const successView = document.getElementById('booking-success');
+
+    // Steps
+    const step1 = document.querySelector('.wizard-step[data-step="1"]');
+    const step2 = document.querySelector('.wizard-step[data-step="2"]');
+    const step3 = document.querySelector('.wizard-step[data-step="3"]');
+
+    const toStep2 = document.getElementById('to-step-2');
+    const toStep3 = document.getElementById('to-step-3');
+    const backToStep1 = document.getElementById('back-to-step-1');
+    const backToStep2 = document.getElementById('back-to-step-2');
+
+    const specialtyOptions = document.getElementById('specialty-options');
+    const specialtyCountBadge = document.getElementById('specialty-count-badge');
+    const selectedSpecialtySummary = document.getElementById('selected-specialty-summary');
+
+    const dateInput = document.getElementById('booking-date-input') as HTMLInputElement | null;
+    const slotsContainer = document.getElementById('slots-container');
+    const slotsStatusText = document.getElementById('slots-status-text');
+
+    const summaryText = document.getElementById('booking-summary-text');
+    const summaryPrice = document.getElementById('booking-summary-price');
+
+    const submitBtn = document.getElementById('submit-booking') as HTMLButtonElement | null;
+    const submitText = document.getElementById('submit-text');
+    const submitIcon = document.getElementById('submit-icon');
+
+    const alertBanner = document.getElementById('booking-alert');
+    const alertText = document.getElementById('booking-alert-text');
+    const alertIcon = document.getElementById('booking-alert-icon');
+    const alertDismiss = document.getElementById('booking-alert-dismiss');
+
+    // Success Elements
+    const successRef = document.getElementById('success-reference');
+    const successPatient = document.getElementById('success-patient-name');
+    const successSpecialty = document.getElementById('success-specialty');
+    const successDatetime = document.getElementById('success-datetime');
+    const successPrice = document.getElementById('success-price');
+    const successStatus = document.getElementById('success-status');
+    const copyRefBtn = document.getElementById('copy-reference-btn');
+    const copyText = document.getElementById('copy-text');
+    const whatsappBtn = document.getElementById('success-whatsapp-btn') as HTMLAnchorElement | null;
+    const resetBtn = document.getElementById('reset-booking-btn');
+
+    // Local State
+    let specialtiesList: Specialty[] = [];
+    let selectedSpecialtyId: number = 1;
+    let selectedSpecialtyName: string = 'Médecine Générale';
+    let selectedSpecialtyPrice: string = '5000';
+    let selectedDate: string = '';
+    let selectedSlotTime: string = '';
+
+    // Initialize Default Date to Today
+    const today = new Date();
+    const todayIso = today.toISOString().split('T')[0];
+    selectedDate = todayIso;
+    if (dateInput) {
+      dateInput.min = todayIso;
+      dateInput.value = todayIso;
+    }
+
+    // Helper: Material icon mapping for specialties
+    function getSpecialtyIcon(name: string): string {
+      const lower = name.toLowerCase();
+      if (lower.includes('cardio')) return 'cardiology';
+      if (lower.includes('pédia') || lower.includes('pedia')) return 'child_care';
+      if (lower.includes('gynéco') || lower.includes('materni')) return 'pregnant_woman';
+      if (lower.includes('dent')) return 'dentistry';
+      if (lower.includes('ophtal')) return 'visibility';
+      if (lower.includes('derma')) return 'dermatology';
+      if (lower.includes('urgence')) return 'emergency';
+      if (lower.includes('chirurg')) return 'medical_services';
+      return 'clinical_notes';
+    }
+
+    function showAlert(message: string, isError = true) {
+      if (!alertBanner || !alertText || !alertIcon) return;
+      alertText.textContent = message;
+      if (isError) {
+        alertBanner.className = 'mb-4 p-3.5 rounded-2xl text-xs font-medium border flex items-center justify-between gap-3 bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300';
+        alertIcon.textContent = 'error';
+      } else {
+        alertBanner.className = 'mb-4 p-3.5 rounded-2xl text-xs font-medium border flex items-center justify-between gap-3 bg-cyan-50 dark:bg-cyan-950/40 border-cyan-200 dark:border-cyan-900 text-cyan-800 dark:text-cyan-300';
+        alertIcon.textContent = 'check_circle';
+      }
+      alertBanner.classList.remove('hidden');
+    }
+
+    function hideAlert() {
+      alertBanner?.classList.add('hidden');
+    }
+
+    alertDismiss?.addEventListener('click', hideAlert);
+
+    // 1. Fetch Specialties from Django API via Axios
+    async function loadSpecialties(preselectName?: string) {
+      try {
+        specialtiesList = await getSpecialties();
+        if (specialtyCountBadge) {
+          specialtyCountBadge.textContent = `${specialtiesList.length} spécialités actives`;
+        }
+
+        if (specialtyOptions) {
+          specialtyOptions.innerHTML = '';
+          specialtiesList.forEach((spec, index) => {
+            const isChecked = preselectName
+              ? spec.name.toLowerCase().includes(preselectName.toLowerCase())
+              : index === 0;
+
+            if (isChecked) {
+              selectedSpecialtyId = spec.id;
+              selectedSpecialtyName = spec.name;
+              selectedSpecialtyPrice = spec.price;
+            }
+
+            const icon = getSpecialtyIcon(spec.name);
+            const label = document.createElement('label');
+            label.className = `specialty-card flex flex-col items-start p-3.5 rounded-2xl border cursor-pointer transition-all bg-white dark:bg-slate-800/80 hover:shadow-md ${
+              isChecked
+                ? 'border-cyan-500 bg-cyan-50/60 dark:bg-cyan-950/50 ring-2 ring-cyan-400'
+                : 'border-slate-200 dark:border-slate-700 hover:border-cyan-400'
+            }`;
+
+            label.innerHTML = `
+              <input type="radio" name="specialty_radio" value="${spec.id}" class="sr-only" ${isChecked ? 'checked' : ''} />
+              <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-[22px] mb-1">${icon}</span>
+              <span class="text-xs font-bold text-[#0A2540] dark:text-white">${spec.name}</span>
+              <span class="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">${parseInt(spec.price, 10).toLocaleString('fr-FR')} FCFA</span>
+            `;
+
+            label.addEventListener('click', () => {
+              selectedSpecialtyId = spec.id;
+              selectedSpecialtyName = spec.name;
+              selectedSpecialtyPrice = spec.price;
+              updateSpecialtyCards();
+              updateSummary();
+            });
+
+            specialtyOptions.appendChild(label);
+          });
+        }
+        updateSummary();
+      } catch (err) {
+        console.error('Failed to load specialties via Axios:', err);
+        showAlert("Impossible de contacter le serveur de réservation. Vérifiez que l'API est démarrée.");
+      }
+    }
+
+    function updateSpecialtyCards() {
+      document.querySelectorAll('.specialty-card').forEach((card) => {
+        const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
+        if (radio && parseInt(radio.value, 10) === selectedSpecialtyId) {
+          radio.checked = true;
+          card.classList.add('border-cyan-500', 'bg-cyan-50/60', 'dark:bg-cyan-950/50', 'ring-2', 'ring-cyan-400');
+        } else {
+          card.classList.remove('border-cyan-500', 'bg-cyan-50/60', 'dark:bg-cyan-950/50', 'ring-2', 'ring-cyan-400');
+        }
+      });
+    }
+
+    // 2. Fetch Available Slots from Django API via Axios
+    async function loadSlots() {
+      if (!slotsContainer) return;
+      slotsContainer.innerHTML = `
+        <div class="col-span-4 sm:col-span-6 text-center py-6 text-slate-500 dark:text-slate-400 text-xs flex flex-col items-center gap-1.5">
+          <span class="material-symbols-outlined animate-spin text-cyan-600 text-[24px]">sync</span>
+          <span>Interrogation des créneaux en direct...</span>
+        </div>
+      `;
+
+      try {
+        const slotsData = await getAvailableSlots(selectedSpecialtyId, selectedDate);
+        const availableSlots = slotsData.slots.filter((s) => s.available);
+
+        if (slotsStatusText) {
+          slotsStatusText.textContent = `${availableSlots.length} créneaux libres`;
+        }
+
+        slotsContainer.innerHTML = '';
+
+        if (slotsData.slots.length === 0) {
+          slotsContainer.innerHTML = `
+            <div class="col-span-4 sm:col-span-6 text-center py-6 text-slate-500 text-xs">
+              Aucun médecin en service à cette date. Choisissez une autre date.
+            </div>
+          `;
+          return;
+        }
+
+        slotsData.slots.forEach((slot, idx) => {
+          const isSlotSelected = selectedSlotTime === slot.time && slot.available;
+          // Auto select first available if none selected
+          if (!selectedSlotTime && slot.available && idx === 0) {
+            selectedSlotTime = slot.time;
+          }
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.disabled = !slot.available;
+
+          if (slot.available) {
+            btn.className = `p-2.5 rounded-xl border text-center transition-all cursor-pointer font-bold text-xs ${
+              selectedSlotTime === slot.time
+                ? 'border-cyan-500 bg-cyan-500 text-slate-950 shadow-md ring-2 ring-cyan-300'
+                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-[#0A2540] dark:text-slate-100 hover:border-cyan-400'
+            }`;
+            btn.innerHTML = `
+              <div>${slot.time}</div>
+              <div class="text-[9px] font-normal ${selectedSlotTime === slot.time ? 'text-slate-950' : 'text-emerald-600 dark:text-emerald-400'}">Libre</div>
+            `;
+            btn.addEventListener('click', () => {
+              selectedSlotTime = slot.time;
+              loadSlots(); // Refresh slot active styles
+              updateSummary();
+            });
+          } else {
+            btn.className = 'p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/40 text-slate-400 text-center text-xs opacity-50 cursor-not-allowed';
+            btn.innerHTML = `
+              <div class="line-through">${slot.time}</div>
+              <div class="text-[9px]">Complet</div>
+            `;
+          }
+
+          slotsContainer.appendChild(btn);
+        });
+
+        updateSummary();
+      } catch (err) {
+        console.error('Failed to load slots via Axios:', err);
+        slotsContainer.innerHTML = `
+          <div class="col-span-4 sm:col-span-6 text-center py-4 text-rose-500 text-xs">
+            Erreur lors du calcul des créneaux. Veuillez réessayer.
+          </div>
+        `;
+      }
+    }
+
+    // Date changes trigger slots reload
+    dateInput?.addEventListener('change', () => {
+      selectedDate = dateInput.value;
+      selectedSlotTime = '';
+      loadSlots();
+      updateSummary();
+    });
+
+    // Quick Date buttons
+    document.querySelectorAll('[data-quick-date]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-quick-date');
+        const d = new Date();
+        if (type === 'tomorrow') {
+          d.setDate(d.getDate() + 1);
+        }
+        selectedDate = d.toISOString().split('T')[0];
+        if (dateInput) {
+          dateInput.value = selectedDate;
+        }
+        document.querySelectorAll('[data-quick-date]').forEach((b) => {
+          b.className = 'quick-date-btn px-3 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-cyan-400 transition-all';
+        });
+        btn.className = 'quick-date-btn px-3 py-2 rounded-xl text-xs font-bold border border-cyan-300 dark:border-cyan-800 bg-[#c6f7ff]/50 dark:bg-cyan-950/60 text-[#0A2540] dark:text-cyan-300';
+        selectedSlotTime = '';
+        loadSlots();
+      });
+    });
+
+    function updateStepIndicator(activeStep: number) {
+      document.querySelectorAll('.step-indicator').forEach((ind) => {
+        const stepNum = parseInt(ind.getAttribute('data-step-indicator') || '1', 10);
+        if (stepNum === activeStep) {
+          ind.className = 'step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-[#c6f7ff]/70 dark:bg-cyan-950/70 border border-cyan-300 dark:border-cyan-800 text-[#0A2540] dark:text-cyan-300 font-bold';
+        } else if (stepNum < activeStep) {
+          ind.className = 'step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 font-semibold';
+        } else {
+          ind.className = 'step-indicator flex items-center gap-2 py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500';
+        }
+      });
+    }
+
+    function updateSummary() {
+      if (selectedSpecialtySummary) {
+        selectedSpecialtySummary.textContent = `${selectedSpecialtyName} (${parseInt(selectedSpecialtyPrice, 10).toLocaleString('fr-FR')} FCFA)`;
+      }
+      if (summaryText) {
+        summaryText.textContent = `${selectedSpecialtyName} • ${selectedDate} à ${selectedSlotTime || '--:--'}`;
+      }
+      if (summaryPrice) {
+        summaryPrice.textContent = `${parseInt(selectedSpecialtyPrice, 10).toLocaleString('fr-FR')} FCFA`;
+      }
+    }
+
+    function goToStep(stepNum: number) {
+      hideAlert();
+      step1?.classList.toggle('hidden', stepNum !== 1);
+      step2?.classList.toggle('hidden', stepNum !== 2);
+      step3?.classList.toggle('hidden', stepNum !== 3);
+      updateStepIndicator(stepNum);
+      updateSummary();
+
+      if (stepNum === 2) {
+        loadSlots();
+      }
+    }
+
+    function openModal(preselectedSpecialty?: string) {
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      // Reset view
+      form?.classList.remove('hidden');
+      successView?.classList.add('hidden');
+      hideAlert();
+
+      requestAnimationFrame(() => {
+        backdrop?.classList.remove('opacity-0');
+        backdrop?.classList.add('opacity-100');
+        dialog?.classList.remove('scale-95', 'opacity-0');
+        dialog?.classList.add('scale-100', 'opacity-100');
+      });
+
+      goToStep(1);
+      loadSpecialties(preselectedSpecialty);
+    }
+
+    function closeModal() {
+      backdrop?.classList.remove('opacity-100');
+      backdrop?.classList.add('opacity-0');
+      dialog?.classList.remove('scale-100', 'opacity-100');
+      dialog?.classList.add('scale-95', 'opacity-0');
+
+      setTimeout(() => {
+        modal?.classList.remove('flex');
+        modal?.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 250);
+    }
+
+    toStep2?.addEventListener('click', () => {
+      goToStep(2);
+    });
+    backToStep1?.addEventListener('click', () => goToStep(1));
+
+    toStep3?.addEventListener('click', () => {
+      if (!selectedSlotTime) {
+        showAlert('Veuillez sélectionner un créneau horaire disponible.');
+        return;
+      }
+      goToStep(3);
+    });
+    backToStep2?.addEventListener('click', () => goToStep(2));
+
+    closeBtn?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+
+    // 3. Handle Form Submit via Axios (POST /api/public/appointments/)
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const prenom = (document.getElementById('patient_prenom') as HTMLInputElement)?.value.trim() || '';
+      const nom = (document.getElementById('patient_nom') as HTMLInputElement)?.value.trim() || '';
+      const tel = (document.getElementById('patient_tel') as HTMLInputElement)?.value.trim() || '';
+      const email = (document.getElementById('patient_email') as HTMLInputElement)?.value.trim() || '';
+      const patientNumber = (document.getElementById('patient_number') as HTMLInputElement)?.value.trim() || '';
+      const motif = (document.getElementById('patient_motif') as HTMLTextAreaElement)?.value.trim() || '';
+
+      if (!nom || !prenom || !tel) {
+        showAlert('Veuillez renseigner votre nom, prénom et numéro de téléphone.');
+        return;
+      }
+
+      if (!selectedSlotTime) {
+        showAlert('Aucun créneau sélectionné.');
+        goToStep(2);
+        return;
+      }
+
+      // UI Loading state
+      if (submitBtn && submitText && submitIcon) {
+        submitBtn.disabled = true;
+        submitText.textContent = 'Enregistrement en cours...';
+        submitIcon.textContent = 'progress_activity';
+        submitIcon.classList.add('animate-spin');
+      }
+
+      try {
+        const payload = {
+          first_name: prenom,
+          last_name: nom,
+          phone_number: tel,
+          email: email || undefined,
+          specialty_id: selectedSpecialtyId,
+          appointment_date: selectedDate,
+          appointment_time: selectedSlotTime,
+          reason: motif || undefined,
+          patient_number: patientNumber || undefined,
+        };
+
+        const res = await bookAppointment(payload);
+
+        // Populate Success View
+        if (successRef) successRef.textContent = res.booking_reference;
+        if (successPatient) successPatient.textContent = `${prenom} ${nom.toUpperCase()}`;
+        if (successSpecialty) successSpecialty.textContent = res.appointment.specialty_name || selectedSpecialtyName;
+        if (successDatetime) successDatetime.textContent = `${selectedDate} à ${selectedSlotTime}`;
+        if (successPrice) successPrice.textContent = `${parseInt(res.appointment.specialty_price || selectedSpecialtyPrice, 10).toLocaleString('fr-FR')} FCFA`;
+        if (successStatus) successStatus.textContent = res.appointment.status_label || 'En attente de confirmation';
+
+        // WhatsApp confirmation link
+        if (whatsappBtn) {
+          const waMessage = `Bonjour VANGA Medical,%0A%0AJe confirme ma réservation enregistrée :%0A- *Réf.* : ${res.booking_reference}%0A- *Patient* : ${encodeURIComponent(prenom + ' ' + nom)}%0A- *Spécialité* : ${encodeURIComponent(res.appointment.specialty_name || selectedSpecialtyName)}%0A- *Date & Heure* : ${selectedDate} à ${selectedSlotTime}%0A- *Montant* : ${res.appointment.specialty_price} FCFA%0A%0AMerci !`;
+          whatsappBtn.href = `https://wa.me/2250768280690?text=${waMessage}`;
+        }
+
+        // Show success screen
+        form.classList.add('hidden');
+        successView?.classList.remove('hidden');
+        form.reset();
+      } catch (err: any) {
+        console.error('Booking failed:', err);
+        const serverError = err.response?.data?.message || err.response?.data?.detail || err.message;
+        showAlert(`Échec de la réservation : ${serverError || 'Erreur serveur. Veuillez réessayer.'}`);
+      } finally {
+        if (submitBtn && submitText && submitIcon) {
+          submitBtn.disabled = false;
+          submitText.textContent = 'Confirmer mon Rendez-vous';
+          submitIcon.textContent = 'check_circle';
+          submitIcon.classList.remove('animate-spin');
+        }
+      }
+    });
+
+    // Copy reference to clipboard
+    copyRefBtn?.addEventListener('click', () => {
+      const ref = successRef?.textContent?.trim() || '';
+      if (ref && navigator.clipboard) {
+        navigator.clipboard.writeText(ref).then(() => {
+          if (copyText) copyText.textContent = 'Copié !';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'Copier';
+          }, 2000);
+        });
+      }
+    });
+
+    resetBtn?.addEventListener('click', closeModal);
+
+    // Global trigger for any button with data-open-booking-modal
+    document.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest('[data-open-booking-modal]');
+      if (target) {
+        e.preventDefault();
+        const specialty = target.getAttribute('data-specialty') || undefined;
+        openModal(specialty);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupBookingModal);
+  } else {
+    setupBookingModal();
+  }
+</script>

@@ -1,0 +1,56 @@
+{
+  "projectName": "VANGA Medical - Clinique d'Excellence",
+  "projectId": "projects/12971660190148583252",
+  "videoConfig": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInSeconds": 16
+  },
+  "screens": [
+    {
+      "id": "1",
+      "screenId": "hero",
+      "title": "Clinique Privée VANGA Medical",
+      "description": "L'excellence médicale et accueil chaleureux au cœur de Yopougon, Abidjan",
+      "imagePath": "images/hero-bg.jpg",
+      "width": 1376,
+      "height": 768,
+      "duration": 4,
+      "transitionType": "fade"
+    },
+    {
+      "id": "2",
+      "screenId": "maternite",
+      "title": "Pôle Mère-Enfant & Spécialités",
+      "description": "Plateau technique moderne et maternité bienveillante 24h/7j",
+      "imagePath": "images/maternite.jpg",
+      "width": 1280,
+      "height": 720,
+      "duration": 4,
+      "transitionType": "slide"
+    },
+    {
+      "id": "3",
+      "screenId": "plateforme",
+      "title": "Plateforme Patient 100% Digitalisée",
+      "description": "Prise de rendez-vous en ligne, dossiers médicaux sécurisés et téléconsultation",
+      "imagePath": "images/vanga-fullpage-mockup.png",
+      "width": 1280,
+      "height": 720,
+      "duration": 4,
+      "transitionType": "fade"
+    },
+    {
+      "id": "4",
+      "screenId": "localisation",
+      "title": "Accès & Urgences 24h/7j",
+      "description": "Yopougon, Niangon Sud à gauche — Rue Awa SANOGO",
+      "imagePath": "images/plan-acces-map.jpg",
+      "width": 1280,
+      "height": 720,
+      "duration": 4,
+      "transitionType": "fade"
+    }
+  ]
+}
